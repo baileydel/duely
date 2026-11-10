@@ -6,37 +6,31 @@ export default function DoneList({ items, open, onToggle, onUndo }) {
   }
 
   return (
-    <section className="done" aria-labelledby="done-heading">
-      <div className="done__head">
-        <h2 id="done-heading" className="done__label">
+    <section aria-labelledby="done-heading">
+      <div className="inline">
+        <h2 id="done-heading" className="label muted">
           Done ({items.length})
         </h2>
-        <button
-          type="button"
-          className="link"
-          onClick={onToggle}
-          aria-expanded={open}
-          aria-controls="done-list"
-        >
+        <button type="button" className="link" onClick={onToggle} aria-expanded={open} aria-controls="done-list">
           {open ? 'hide' : 'show'}
         </button>
       </div>
 
       {open && (
-        <ul id="done-list" className="done__list">
+        <ul id="done-list" className="list">
           {items.map((a) => (
-            <li key={a.id} className="done-row">
-              <span className="done-check">
-                <CheckIcon size={15} white />
+            <li key={a.id} className="row line">
+              <span className="circle circle--done">
+                <CheckIcon />
               </span>
-              <span className="done-row__name">
+              <p className="muted">
                 <s>{a.name}</s>
                 <span className="visually-hidden"> (done)</span>
-              </span>
-              <span className="done-row__class">{a.className}</span>
+                <span className="tag">{a.className}</span>
+              </p>
               <button
                 type="button"
-                className="link done-row__undo"
+                className="link"
                 onClick={() => onUndo(a.id)}
                 aria-label={`Undo, put "${a.name}" back in the list`}
               >

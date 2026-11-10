@@ -1,4 +1,5 @@
 import PageTitle from '../components/PageTitle.jsx';
+import Section from '../components/Section.jsx';
 
 export default function Help() {
   return (
@@ -6,34 +7,45 @@ export default function Help() {
       <div className="page-head">
         <div>
           <PageTitle docTitle="How it works">How it works</PageTitle>
-          <p className="subtitle">Everything Duely does, on one page. About two minutes to read.</p>
+          <p className="subtitle">Everything duely does, on one page. About two minutes to read.</p>
         </div>
       </div>
 
-      <section className="help-section" aria-labelledby="help-adding">
-        <h2 id="help-adding" className="help-heading">
-          Adding an assignment
-        </h2>
-        <ol>
+      <Section id="help-adding" title="Adding an assignment">
+        <ol className="steps">
           <li>
-            Click <strong>+ Add one</strong> on the Due soon page, or <strong>Add</strong> up top.
+            Click <strong>+ Add assignment</strong> (or <strong>+ Add one</strong>) on Due soon, or{' '}
+            <strong>Add</strong> up top.
           </li>
-          <li>Say what it is, which class, and when it is due. Pick a class color or add a note if you want.</li>
+          <li>
+            Say what it is, which class, when it is due, and which day you’ll work on it. Tap Today, Tomorrow or Day
+            before it’s due, or pick any day up to the due date.
+          </li>
           <li>
             Press <strong>Save</strong>. You land back on Due soon with the new row in its place.
           </li>
         </ol>
-        <p className="help-aside">
-          Left something required blank? Save does nothing except underline that field in red and tell you.
-          Nothing is saved until all three are filled.
+        <p className="muted line">
+          Left something required blank? Save does nothing except underline that field in red and tell you. Nothing
+          is saved until all four are filled.
         </p>
-      </section>
+      </Section>
 
-      <section className="help-section" aria-labelledby="help-finishing">
-        <h2 id="help-finishing" className="help-heading">
-          Finishing and undoing
-        </h2>
-        <ul>
+      <Section id="help-planning" title="Planning your days">
+        <ul className="steps">
+          <li>
+            Every assignment has a day you plan to work on it. On that day it shows up under <strong>Today</strong> at
+            the top of Due soon.
+          </li>
+          <li>Missed the day? It stays under Today until you mark it done, so it can’t slip by.</li>
+          <li>
+            Each row says which day you’re working on it, and its time estimate if you gave one.
+          </li>
+        </ul>
+      </Section>
+
+      <Section id="help-finishing" title="Finishing and undoing">
+        <ul className="steps">
           <li>
             The circle next to each row is <strong>Mark done</strong>. Click it and the row moves to Done, with a
             note and an undo link.
@@ -43,13 +55,10 @@ export default function Help() {
           </li>
           <li>Done can be hidden with the link beside it.</li>
         </ul>
-      </section>
+      </Section>
 
-      <section className="help-section" aria-labelledby="help-reading">
-        <h2 id="help-reading" className="help-heading">
-          Reading the list
-        </h2>
-        <ul>
+      <Section id="help-reading" title="Reading the list">
+        <ul className="steps">
           <li>
             Rows are grouped <strong>Overdue</strong>, <strong>This week</strong>, <strong>Later</strong>, soonest
             first inside each group.
@@ -57,35 +66,29 @@ export default function Help() {
           <li>Overdue rows say how many days late in red words, not just a color.</li>
           <li>The dot by a class is the color you picked for it. The class name is always there too.</li>
         </ul>
-      </section>
+      </Section>
 
-      <section className="help-section" aria-labelledby="help-guides">
-        <h2 id="help-guides" className="help-heading">
-          Study guides
-        </h2>
-        <ul>
+      <Section id="help-guides" title="Study guides">
+        <ul className="steps">
           <li>
-            Every assignment has a <strong>Study guide</strong> link. It plans out the days you have left, so you know
-            what to do today.
+            Click an assignment’s name to open its study guide: the day you’re working on it, its time
+            estimate, and its note.
           </li>
           <li>
-            The assignment’s note is shown under the plan. Long notes are folded; <strong>show all</strong> opens
-            the rest.
+            The assignment’s note is shown at the bottom. Long notes are folded; <strong>show all</strong> opens the
+            rest.
           </li>
         </ul>
-      </section>
+      </Section>
 
-      <section className="help-section" aria-labelledby="help-faq">
-        <h2 id="help-faq" className="help-heading">
-          Common questions
-        </h2>
+      <Section id="help-faq" title="Common questions">
         <dl className="faq">
           <dt>Can I change a due date?</dt>
           <dd>Not yet. For now, mark the old one done and add a new one.</dd>
           <dt>Is anything ever deleted?</dt>
           <dd>No. Done rows stay in Done until you undo them.</dd>
         </dl>
-      </section>
+      </Section>
     </>
   );
 }

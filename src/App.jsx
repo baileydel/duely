@@ -10,7 +10,7 @@ export default function App() {
     <Routes>
       <Route element={<Layout />}>
         <Route index element={<Home />} />
-        <Route path="add" element={<AddAssignment />} />        
+        <Route path="add" element={<AddAssignment />} />
         <Route path="help" element={<Help />} />
         <Route path="guide/:id" element={<StudyGuide />} />
         <Route path="*" element={<Navigate to="/" replace />} />

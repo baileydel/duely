@@ -5,11 +5,11 @@ export default function EmptyState() {
   return (
     <>
       <section className="empty" aria-labelledby="empty-heading">
-        <img className="empty__art" src={sadCalendar} alt="" width="104" height="104" />
+        <img src={sadCalendar} alt="" width="104" height="104" />
         <h2 id="empty-heading">No assignments yet</h2>
         <p>
-          Add one and duely makes you a study guide for it: a day-by-day plan for the time you have left, so you
-          know what to do today.
+          Add one and pick the day you’ll work on it. On that day it shows up under Today, so you always know what to
+          do next.
         </p>
         <Link to="/add" className="btn btn--solid">
           + Add assignment
@@ -17,20 +17,21 @@ export default function EmptyState() {
       </section>
 
       <section className="notes" aria-labelledby="notes-heading">
-        <h2 id="notes-heading">A few things worth knowing</h2>
-        <p>
-          Every assignment gets a <strong>Study guide</strong> link, so you always know what to do next instead of
-          figuring out where to start the night before.
+        <h2 id="notes-heading" className="label">
+          A few things worth knowing
+        </h2>
+        <p className="muted">
+          <strong>Today</strong> at the top of this page lists what you planned to work on today. Missed a day? It
+          stays under Today until it’s done, so nothing slips.
         </p>
-        <p>
-          Once you have a list, it is grouped into <strong>Overdue</strong>, <strong>This week</strong> and{' '}
-          <strong>Later</strong>, so the thing that needs you most is always at the top.
+        <p className="muted">
+          Below that, everything is grouped into <strong>Overdue</strong>, <strong>This week</strong> and{' '}
+          <strong>Later</strong>, so the thing that needs you most is at the top.
         </p>
-        <p>
-          Finished something? Click the circle next to it. It moves to Done, and there is always an undo if you
-          clicked the wrong one.
+        <p className="muted">
+          Finished something? Click the circle next to it. There is always an undo if you clicked the wrong one.
         </p>
-        <p>
+        <p className="muted">
           Nothing is ever deleted, and nothing is saved until you press Save. If you are not sure how something
           works, <Link to="/help">Help</Link> is one page long.
         </p>

@@ -15,7 +15,3 @@ export const DEFAULT_COLOR = 'blue';
 export function colorHex(id) {
   return (COLORS.find((c) => c.id === id) ?? COLORS[0]).hex;
 }
-
-export function colorLabel(id) {
-  return (COLORS.find((c) => c.id === id) ?? COLORS[0]).label;
-}

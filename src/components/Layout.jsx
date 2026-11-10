@@ -10,7 +10,6 @@ export default function Layout() {
 
   return (
     <div className="app">
-      <a className="skip-link" href="#main">Skip to content</a>
       <header className="site-header">
         <Link to="/" className="brand" aria-label="duely, home">
           duely
@@ -21,7 +20,7 @@ export default function Layout() {
           <NavLink to="/help">Help</NavLink>
         </nav>
       </header>
-      <main id="main" className="page">
+      <main>
         <Outlet />
       </main>
     </div>

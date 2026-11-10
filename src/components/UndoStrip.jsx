@@ -19,16 +19,10 @@ export default function UndoStrip({ strip, onUndo }) {
   return (
     <div className="strip-slot" role="status" aria-live="polite">
       {strip && (
-        <div className="strip">
+        <div className="strip spread">
           <span>{strip.message}</span>
           {strip.undoable && (
-            <button
-              ref={undoRef}
-              type="button"
-              className="link link--strong"
-              onClick={onUndo}
-              aria-label={strip.undoLabel}
-            >
+            <button ref={undoRef} type="button" className="link" onClick={onUndo} aria-label={strip.undoLabel}>
               undo
             </button>
           )}

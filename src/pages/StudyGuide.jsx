@@ -1,89 +1,59 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import PageTitle from '../components/PageTitle.jsx';
+import Section from '../components/Section.jsx';
 import { getAssignment } from '../api.js';
 import { colorHex } from '../colors.js';
-import { addDays, daysFromToday, formatShort, relativeLabel, todayISO } from '../dates.js';
+import { daysFromToday, formatShort, relativeLabel, todayISO } from '../dates.js';
+import { formatHours } from '../hours.js';
 import { useBackLink } from '../navigation.js';
 
 // Notes longer than this are folded behind "show all" (IH#3).
 const LONG_NOTE = 400;
 
-/**
- * A day-by-day plan for the days left before the due date.
- * Returns a list of { when, what } steps.
- */
-function planFor(due, today) {
-  const daysLeft = daysFromToday(due, today);
-
-  if (daysLeft < 0) {
-    return [
-      { when: 'Today', what: 'Re-read what’s asked and do the smallest version that fully answers it.' },
-      { when: 'Today', what: 'Hand it in, then check the syllabus for how late work is graded.' },
-    ];
-  }
-
-  if (daysLeft === 0) {
-    return [
-      { when: 'Today', what: 'Read through what’s asked and list each part you need to hand in.' },
-      { when: 'Today', what: 'Finish, check it against that list, and submit before the deadline.' },
-    ];
-  }
-
-  const label = (date) => (date === today ? 'Today' : formatShort(date, today));
-  const workDay = addDays(today, Math.max(1, Math.floor(daysLeft / 2)));
-  const reviewDay = addDays(due, -1);
-
-  const steps = [{ when: label(today), what: 'Read what’s asked and list each part you need to hand in.' }];
-  if (workDay < reviewDay) {
-    steps.push({ when: label(workDay), what: 'Do the main part. Leave the polishing for later.' });
-  }
-  steps.push({ when: label(reviewDay), what: 'Check it over against your list and fix anything missing.' });
-  steps.push({ when: label(due), what: 'Submit it. Done early? Mark it done in duely.' });
-  return steps;
-}
-
-/** "due in 2 days, Wed, Nov 11" or "2 days late, Sat, Nov 7" */
+/** "due in 2 days, Wed, Nov 11", or "2 days late, Sat, Nov 7" with the lateness in bold red */
 function dueLabelFor(item, today) {
   const daysLeft = daysFromToday(item.due, today);
   const relative = daysLeft <= 0 ? relativeLabel(daysLeft) : `due ${relativeLabel(daysLeft)}`;
-  return `${relative}, ${formatShort(item.due, today)}`;
-}
-
-/** A titled section, styled like the Help page. */
-function Section({ id, title, children }) {
   return (
-    <section className="help-section" aria-labelledby={id}>
-      <h2 id={id} className="help-heading">
-        {title}
-      </h2>
-      {children}
-    </section>
+    <>
+      {daysLeft < 0 ? <strong className="late">{relative}</strong> : relative}, {formatShort(item.due, today)}
+    </>
   );
 }
 
-function PageHeader({ docTitle, children }) {
+function PageHeader({ title, children }) {
   return (
     <div className="page-head">
       <div>
-        <PageTitle docTitle={docTitle}>Study guide</PageTitle>
+        <PageTitle docTitle={title} small>
+          {title}
+        </PageTitle>
         <p className="subtitle">{children}</p>
       </div>
     </div>
   );
 }
 
-function StudyPlan({ due, today }) {
+/** "today" or "Wed, Nov 11" */
+const dayLabel = (iso, today) => (iso <= today ? 'today' : formatShort(iso, today));
+
+/** The day the student plans to work on it. */
+function PlanSection({ item, today }) {
   return (
     <Section id="guide-plan" title="Your plan">
-      <ol className="plan">
-        {planFor(due, today).map((step, i) => (
-          <li key={i}>
-            <span className="plan__when">{step.when}</span>
-            <span>{step.what}</span>
-          </li>
-        ))}
-      </ol>
+      <p>
+        You’re working on it <strong>{dayLabel(item.workOn, today)}</strong>
+        {item.hours ? (
+          <>
+            {' '}
+            for about <strong>{formatHours(item.hours)}</strong>.
+          </>
+        ) : (
+          '. No time estimate yet.'
+        )}
+        {item.workOn < today && ` You’d planned ${formatShort(item.workOn, today)}, so it moved to today.`}
+      </p>
     </Section>
   );
 }
@@ -95,14 +65,14 @@ function NoteSection({ note }) {
   return (
     <Section id="guide-note" title="What it asks for">
       {isLong && (
-        <details className="guide-note-more">
-          <summary className="guide-text">
-            {note.slice(0, LONG_NOTE).trimEnd()}… <span className="guide-note-more__link">show all</span>
+        <details>
+          <summary className="note">
+            {note.slice(0, LONG_NOTE).trimEnd()}… <span className="link">show all</span>
           </summary>
-          <p className="guide-text">{note}</p>
+          <p className="note">{note}</p>
         </details>
       )}
-      {!isLong && <p className="guide-text">{note}</p>}
+      {!isLong && <p className="note">{note}</p>}
     </Section>
   );
 }
@@ -120,12 +90,12 @@ export default function StudyGuide() {
 
   // One back link at the top (so it's right there), and the same one at the bottom of the page.
   const topBackLink = (
-    <Link to="/" className="back-link" onClick={onBack}>
+    <Link to="/" className="link back-link" onClick={onBack}>
       <span aria-hidden="true">← </span>back to Due soon
     </Link>
   );
   const bottomBackLink = (
-    <Link to="/" className="link link--lg" onClick={onBack}>
+    <Link to="/" className="link" onClick={onBack}>
       back to Due soon
     </Link>
   );
@@ -138,7 +108,7 @@ export default function StudyGuide() {
     return (
       <>
         {topBackLink}
-        <PageHeader docTitle="Study guide">That assignment isn’t in duely.</PageHeader>
+        <PageHeader title="Not found">That assignment isn’t in duely.</PageHeader>
       </>
     );
   }
@@ -147,15 +117,14 @@ export default function StudyGuide() {
     <>
       {topBackLink}
 
-      <PageHeader docTitle={`Study guide: ${item.name}`}>
-        <span className="guide-for">{item.name}</span>
+      <PageHeader title={item.name}>
         <span className="dot" style={{ background: colorHex(item.color) }} aria-hidden="true" />
         {item.className} · {dueLabelFor(item, today)}
       </PageHeader>
 
-      {item.done && <p className="guide-done">You’ve marked this one done. Nice work.</p>}
+      {item.done && <p className="muted">You’ve marked this one done. Nice work.</p>}
 
-      <StudyPlan due={item.due} today={today} />
+      {!item.done && <PlanSection item={item} today={today} />}
 
       {item.note && <NoteSection note={item.note} />}
 

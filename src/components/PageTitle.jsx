@@ -1,18 +1,14 @@
 import { useEffect } from 'react';
-import squiggle from '../assets/squiggle.svg';
 
-/** Big serif page heading with the hand-drawn gold underline. */
-export default function PageTitle({ children, docTitle }) {
+/** Big serif page heading. The gold squiggle under it comes from styles.css. */
+export default function PageTitle({ children, docTitle, small = false }) {
   useEffect(() => {
     document.title = docTitle ? `${docTitle} · duely` : 'duely';
   }, [docTitle]);
 
   return (
-    <h1 className="page-title">
-      <span className="page-title__text">
-        {children}
-        <img className="squiggle" src={squiggle} alt="" />
-      </span>
+    <h1 className={small ? 'page-title page-title--small' : 'page-title'}>
+      <span>{children}</span>
     </h1>
   );
 }
