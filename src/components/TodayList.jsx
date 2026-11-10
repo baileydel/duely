@@ -5,10 +5,11 @@ import { formatHours } from '../hours.js';
 /**
  * The assignments planned for today, at the top of Due soon. A planned day that has
  * passed without the assignment being done moves to today, so nothing is lost.
+ * Past-due assignments are left out: they are already listed under Overdue.
  */
 export default function TodayList({ items, today, onDone }) {
   const planned = items
-    .filter((a) => !a.done && a.workOn <= today)
+    .filter((a) => !a.done && a.workOn <= today && a.due >= today)
     .map((a) => ({ ...a, days: daysFromToday(a.due, today) }))
     .sort((a, b) => a.due.localeCompare(b.due) || a.createdAt - b.createdAt);
   const totalHours = planned.reduce((sum, a) => sum + (a.hours ?? 0), 0);

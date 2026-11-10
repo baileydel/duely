@@ -22,7 +22,7 @@ export default function EmptyState() {
         </h2>
         <p className="muted">
           <strong>Today</strong> at the top of this page lists what you planned to work on today. Missed a day? It
-          stays under Today until it’s done, so nothing slips.
+          stays under Today until it’s done, or moves up to Overdue once the due date passes, so nothing slips.
         </p>
         <p className="muted">
           Below that, everything is grouped into <strong>Overdue</strong>, <strong>This week</strong> and{' '}

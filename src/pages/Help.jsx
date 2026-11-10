@@ -37,7 +37,10 @@ export default function Help() {
             Every assignment has a day you plan to work on it. On that day it shows up under <strong>Today</strong> at
             the top of Due soon.
           </li>
-          <li>Missed the day? It stays under Today until you mark it done, so it can’t slip by.</li>
+          <li>
+            Missed the day? It stays under Today until you mark it done, so it can’t slip by. Once the due date has
+            passed, it moves up to <strong>Overdue</strong> instead.
+          </li>
           <li>
             Each row says which day you’re working on it, and its time estimate if you gave one.
           </li>
